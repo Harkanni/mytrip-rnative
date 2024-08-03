@@ -15,6 +15,7 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../configs/FirebaseConfig';
 import { Toast } from 'react-native-toast-message/lib/src/Toast';
 import ToastError from '../../../components/ToastError';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignIn = () => {
   const navigation = useNavigation();
@@ -55,10 +56,13 @@ const SignIn = () => {
 
     console.log('email: ' + email + ' password: ' + password);
     signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         // Signed in
         const user = userCredential.user;
+
+        await AsyncStorage.setItem('user', JSON.stringify(user));
         console.log('User', user);
+        router.replace('/mytrip');
         // ...
       })
       .catch((error) => {
@@ -67,9 +71,7 @@ const SignIn = () => {
         console.log('Error: ', errorMessage, errorCode, errorMessage);
         if (errorCode === 'auth/invalid-credential') {
           Platform.OS == 'ios'
-            ? showToast(
-                'Invalid email and password, please try again'
-              )
+            ? showToast('Invalid email and password, please try again')
             : ToastAndroid.show(
                 'Invalid email and password, please try again',
                 ToastAndroid.LONG
