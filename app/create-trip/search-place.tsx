@@ -30,14 +30,19 @@ const SearchPlace = () => {
    return (
       <View style={{ padding: 25, paddingTop: 100, backgroundColor: Colors.WHITE, height: '100%' }}>
          <GooglePlacesAutocomplete
+
             styles={{
                textInputContainer: {
                   borderWidth: 2,
                   borderRadius: 10,
                   marginTop: 5,
                   overflow: 'hidden',
-                  padding: 5
-               }
+                  padding: 5,
+               },
+               textInput: {
+                  color: 'black',
+                  placeholder: 'red'
+               },
             }}
             placeholder='Search Place'
             fetchDetails={true}
